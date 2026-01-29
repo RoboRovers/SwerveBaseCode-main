@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot;
+package frc.robot.Util;
 
 import java.util.HashMap;
 
@@ -115,27 +115,8 @@ public final class Constants {
   }
  
 
-  
-  public static final class AprilTagIds{ //[id num, height in inches, coordinate x, coordinate y, heading]
-    public static final double[] blueSourceRight = {1, 53.375};
-    public static final double[] blueSourceLeft = {2, 53.375};
-    public static final double[] redSpeakerRight = {3, 57.125};
-    public static final double[] redSpeakerLeft = {4, 57.125};
-    public static final double[] redAmp = {5, 53.25};
-    public static final double[] blueAmp = {6, 53.25};
-    public static final double[] blueSpeakerRight = {7, 57.125};
-    public static final double[] blueSpeakerLeft = {8, 57.125};
-    public static final double[] redSourceRight = {9, 53.375};
-    public static final double[] redSourceLeft = {10, 53.375};
-    public static final double[] redStageSource = {11, 51.25};
-    public static final double[] redStageAmp = {12, 51.25};
-    public static final double[] redStageCenter = {13, 51.25};
-    public static final double[] blueStageCenter = {14, 51.25};
-    public static final double[] blueStageAmp = {15, 51.25};
-    public static final double[] blueStageSource = {16, 51.25};
-  }
 
-  public static final class limelightConstants{
+  /*public static final class limelightConstants{
     public static final double thetakP = 4;
     public static final double thetakI = 0.0002;
     public static final double thetakD = 0;
@@ -148,7 +129,7 @@ public final class Constants {
     public static final double limelightDistanceForward = 10.5; //inches
     public static final double limelightDistanceRight = 2.5; //inches
     public static final double limelightHeight = 10.5; //inches
-  }
+  }*/
 
 
   public static final class AutoConstants {
