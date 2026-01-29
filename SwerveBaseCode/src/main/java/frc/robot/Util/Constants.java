@@ -40,21 +40,21 @@ public final class Constants {
 
     //TODO Configure all motor controller CAN Bus ports
     //start front front left to front right to back right and all drives then all steers then all absolutes
-    public static final int kFrontLeftTurningMotorPort = 7;//2
-    public static final int kFrontLeftDriveMotorPort = 8;//1
-    public static final int kFrontLeftDriveAbsoluteEncoderPort = 10;//10
+    public static final int kFrontLeftTurningMotorPort = 2;//2
+    public static final int kFrontLeftDriveMotorPort = 1;//1
+    public static final int kFrontLeftDriveAbsoluteEncoderPort = 1;//10
     
-    public static final int kFrontRightTurningMotorPort = 3;//6
-    public static final int kFrontRightDriveMotorPort = 4;//5
-    public static final int kFrontRightDriveAbsoluteEncoderPort = 11; //11
+    public static final int kFrontRightTurningMotorPort = 4;//6
+    public static final int kFrontRightDriveMotorPort = 3;//5
+    public static final int kFrontRightDriveAbsoluteEncoderPort = 2; //11
 
-    public static final int kBackLeftTurningMotorPort = 6; //3
-    public static final int kBackLeftDriveMotorPort = 5; //4
-    public static final int kBackLeftDriveAbsoluteEncoderPort = 12; //12
+    public static final int kBackLeftTurningMotorPort = 5; //3
+    public static final int kBackLeftDriveMotorPort = 6; //4
+    public static final int kBackLeftDriveAbsoluteEncoderPort = 4; //12
 
-    public static final int kBackRightTurningMotorPort = 2; //7
-    public static final int kBackRightDriveMotorPort = 1; //8
-    public static final int kBackRightDriveAbsoluteEncoderPort = 9;//13
+    public static final int kBackRightTurningMotorPort = 7; //7
+    public static final int kBackRightDriveMotorPort = 8; //8
+    public static final int kBackRightDriveAbsoluteEncoderPort = 3;//13
     
 
     //TODO Test and input all module offsets
@@ -65,10 +65,10 @@ public final class Constants {
 
 
     //TODO Invert any motor to match controller output
-    public static final boolean kFrontLeftTurningEncoderReversed = false;
-    public static final boolean kFrontRightTurningEncoderReversed = false;
-    public static final boolean kBackLeftTurningEncoderReversed = false;
-    public static final boolean kBackRightTurningEncoderReversed = false;
+    public static final boolean kFrontLeftSteerEncoderReversed = false;
+    public static final boolean kFrontRightSteerEncoderReversed = false;
+    public static final boolean kBackLeftSteerEncoderReversed = false;
+    public static final boolean kBackRightSteerEncoderReversed = false;
 
     public static final boolean kFrontLeftDriveEncoderReversed = true;
     public static final boolean kFrontRightDriveEncoderReversed = false;
@@ -92,13 +92,15 @@ public final class Constants {
   
   public static final class ModuleConstants {
     public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
+    public static final double kWheelCircumfrenceMeters = Math.PI * kWheelDiameterMeters;
     public static final double kDriveMotorGearRatio = 4.59 / 1; //4.59 for Swerve X, 6.75 for sds
     public static final double kTurningMotorGearRatio = 13.3714 / 1; //13.3714 for Swerve X, 12.8 for sds
     public static final double kDriveEncoderRot2Meter = 1/16.0344; //Not sure try 1/16.0344, 1/23.58 for sds
+    public static final double kDriveMPS2RPS = kDriveMotorGearRatio/kWheelCircumfrenceMeters;
     
     public static final double kTurningConversionFactor2Deg =  28.25;
     public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
-    public static final double kTurningEncoderRPM2DegPerSec = kTurningConversionFactor2Deg / 60;
+    public static final double kSteerEncoderRPM2DegPerSec = kTurningConversionFactor2Deg / 60;
 
     public static final double kPTurning = 0.0075;
     public static final double kITurning = 0.0;
