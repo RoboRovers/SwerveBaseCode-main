@@ -58,10 +58,10 @@ public final class Constants {
     
 
     //TODO Test and input all module offsets
-    public static final double kFLDegrees = 131.396484375;
-    public static final double kFRDegrees = -111.4453125;
-    public static final double kBLDegrees = 152.2265625;
-    public static final double kBRDegrees = 4.5703125;
+    public static final double kFLOffset= -0.478516;
+    public static final double kFROffset = -0.072754;
+    public static final double kBLOffset = 0.197998;
+    public static final double kBROffset = -0.134033;
 
 
     //TODO Invert any motor to match controller output

@@ -34,6 +34,7 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Util.Constants;
 import frc.robot.Util.Constants.ModuleConstants;
 
 
@@ -146,7 +147,15 @@ public class Module extends SubsystemBase{
     driveMotor.setControl(new MotionMagicVelocityVoltage(rps));
   }
   
-  
+   public void setDesiredState(SwerveModuleState state) 
+  {
+    if (Math.abs(state.speedMetersPerSecond) < 0.01) {stop();return;}
+    state.optimize(getModulePosition().angle);
+    state.cosineScale(getModulePosition().angle);
+    driveMotor.set(state.speedMetersPerSecond / Constants.DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
+    // getUpToSpeed(state.speedMetersPerSecond);
+    steerPIDController.setSetpoint(state.angle.getDegrees(), ControlType.kPosition);
+  }
   
   //Steer Methods
   public double getPosition()

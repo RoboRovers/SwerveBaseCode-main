@@ -8,6 +8,6 @@ public class Controller {
     public Controller()
     {
         leftStick = new CommandJoystick(0); //Change this
-        rightStick = new CommandJoystick(0); //Change this
+        rightStick = new CommandJoystick(1); //Change this
     }
 }
