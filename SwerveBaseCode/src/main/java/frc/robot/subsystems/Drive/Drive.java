@@ -43,7 +43,7 @@ public class Drive extends Command{
         s_Swerve.faceAllFoward();
     }
 
-      @Override
+    @Override
     public void execute() {
         xSpeed = -right.getY();
         ySpeed = -right.getX();
@@ -74,17 +74,7 @@ public class Drive extends Command{
         s_Swerve.setModuleStates(chassisSpeeds);        
     }
 
-    public void driveAlgae(double xSpeed, double turningSpeed)
-    {
-        chassisSpeeds = new ChassisSpeeds(xSpeed, this.ySpeed, turningSpeed);
-        s_Swerve.setModuleStates(chassisSpeeds);
-    }
-
-    public void driveReef(double xSpeed, double ySpeed, double turningSpeed)
-    {
-        chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(new ChassisSpeeds(ySpeed, xSpeed, turningSpeed), s_Swerve.getRotation2d());
-        s_Swerve.setModuleStates(chassisSpeeds);
-    }
+   
 
 
     @Override
