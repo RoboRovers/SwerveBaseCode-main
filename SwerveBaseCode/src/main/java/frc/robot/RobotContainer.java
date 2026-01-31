@@ -9,13 +9,15 @@ import frc.robot.Util.Constants.DriveConstants;
 import frc.robot.Util.Constants.OIConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Subsystems.Drive.Swerve;
-import frc.robot.Subsystems.Drive.Module;
+
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Util.Controller;
 import frc.robot.Subsystems.ExampleSubsystem;
@@ -34,6 +36,8 @@ public class RobotContainer {
   public Controller u_Controller;
   public Swerve s_Swerve;
   public Drive c_Drive;
+  
+
 
 
 
@@ -45,9 +49,22 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureFiles();
     configureBindings();
+    s_Swerve.setDefaultCommand(c_Drive);
   }
 
-
+  public SequentialCommandGroup intakeRumble()
+  {
+    return new SequentialCommandGroup(Commands.runOnce(
+    ()->{
+      u_Controller.leftStick.setRumble(RumbleType.kBothRumble, 0.5);
+      u_Controller.rightStick.setRumble(RumbleType.kBothRumble, 0.5);
+    }).andThen(
+    Commands.waitSeconds(2.5)).andThen(
+    Commands.runOnce(()->{
+      u_Controller.leftStick.setRumble(RumbleType.kBothRumble, 0);
+      u_Controller.rightStick.setRumble(RumbleType.kBothRumble, 0);
+    })));
+  }
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -73,6 +90,7 @@ public class RobotContainer {
     u_Controller = new Controller();
     s_Swerve = new Swerve();
     c_Drive = new Drive(s_Swerve, u_Controller.leftStick, u_Controller.rightStick);
+
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

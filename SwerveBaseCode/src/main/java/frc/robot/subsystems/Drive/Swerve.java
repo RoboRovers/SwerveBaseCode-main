@@ -182,20 +182,20 @@ public class Swerve extends SubsystemBase{
         SmartDashboard.putNumber("Back Right AE Value", backRightModule.getABSPosition());
 
         //RE Degrees Reading
-        // SmartDashboard.putNumber("Front left RE Value", frontLeftModule.getModulePosition().angle.getDegrees());
-        // SmartDashboard.putNumber("Front Right RE Value", frontRightModule.getModulePosition().angle.getDegrees());
-        // SmartDashboard.putNumber("Back left RE Value", backLeftModule.getModulePosition().angle.getDegrees());
-        // SmartDashboard.putNumber("Back Right RE Value", backRightModule.getModulePosition().angle.getDegrees());
+        SmartDashboard.putNumber("Front left RE Value", frontLeftModule.getModulePosition().angle.getDegrees());
+        SmartDashboard.putNumber("Front Right RE Value", frontRightModule.getModulePosition().angle.getDegrees());
+        SmartDashboard.putNumber("Back left RE Value", backLeftModule.getModulePosition().angle.getDegrees());
+        SmartDashboard.putNumber("Back Right RE Value", backRightModule.getModulePosition().angle.getDegrees());
         //RE Distance Reading
-        // SmartDashboard.putNumber("Front Left Drive Position", frontLeftModule.getDrivePosition());
-        // SmartDashboard.putNumber("Front Right Drive Position", frontRightModule.getDrivePosition());
-        // SmartDashboard.putNumber("Back Left Drive Position", backLeftModule.getDrivePosition());
-        // SmartDashboard.putNumber("Back Right Drive Position", backRightModule.getDrivePosition());
+        SmartDashboard.putNumber("Front Left Drive Position", frontLeftModule.getDrivePosition());
+        SmartDashboard.putNumber("Front Right Drive Position", frontRightModule.getDrivePosition());
+        SmartDashboard.putNumber("Back Left Drive Position", backLeftModule.getDrivePosition());
+        SmartDashboard.putNumber("Back Right Drive Position", backRightModule.getDrivePosition());
 
-        SmartDashboard.putNumber("FL Drive Temp", frontLeftModule.driveMotor.getDeviceTemp().getValueAsDouble());
+        /*SmartDashboard.putNumber("FL Drive Temp", frontLeftModule.driveMotor.getDeviceTemp().getValueAsDouble());
         SmartDashboard.putNumber("FR Drive Temp", frontRightModule.driveMotor.getDeviceTemp().getValueAsDouble());
         SmartDashboard.putNumber("BL Drive Temp", backLeftModule.driveMotor.getDeviceTemp().getValueAsDouble());
-        SmartDashboard.putNumber("BR Drive Temp", backRightModule.driveMotor.getDeviceTemp().getValueAsDouble());
+        SmartDashboard.putNumber("BR Drive Temp", backRightModule.driveMotor.getDeviceTemp().getValueAsDouble());*/
         
     
 

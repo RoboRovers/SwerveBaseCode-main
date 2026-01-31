@@ -3,11 +3,14 @@ package frc.robot.Subsystems.Drive;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
@@ -38,9 +41,12 @@ import frc.robot.Util.Constants;
 import frc.robot.Util.Constants.ModuleConstants;
 
 
+
+
 public class Module extends SubsystemBase{
 
-    public TalonFX driveMotor;
+
+    public SparkMax driveMotor;
     public SparkMax steerMotor;
     public CANcoder absoluteEncoder;
 
@@ -49,14 +55,16 @@ public class Module extends SubsystemBase{
     public ClosedLoopOutputType driveClosedLoopOutput = ClosedLoopOutputType.Voltage;
 
     public NeutralModeValue neutralModeValue;
-    public Slot0Configs driveValues;
+    public SparkBaseConfig driveValues;
     public FeedbackConfigs driveFeedbackConfigs;
     
     public VelocityVoltage velocityRequest;
     public MotionMagicVelocityVoltage motionMagicRequest;
 
+    public SparkClosedLoopController drivePIDController;
     public SparkClosedLoopController steerPIDController;
     public RelativeEncoder steerEncoder;
+    public RelativeEncoder driveEncoder;
     public SparkBaseConfig steerValues;
 
     public Rotation2d absOffset;
@@ -88,28 +96,36 @@ public class Module extends SubsystemBase{
 
  
    
-    @SuppressWarnings("removal")
+    
     public Module(int steerMotorCANID, int driveMotorCANID, boolean invertDrive, boolean invertSteer, int absoluteEncoderCANID, double absOffset, boolean absoluteReversed)
     {
-        driveMotor = new TalonFX(driveMotorCANID);
-        driveValues = new Slot0Configs().withKP(0.1).withKI(0).withKD(0.1).withKS(0.4).withKV(0.124);
-        driveFeedbackConfigs = new FeedbackConfigs().withSensorToMechanismRatio(ModuleConstants.kDriveMotorGearRatio);
-        neutralModeValue = NeutralModeValue.Brake;
-        driveMotor.getConfigurator().apply(driveValues);
-        driveMotor.getConfigurator().apply(new CurrentLimitsConfigs().withStatorCurrentLimitEnable(false).withSupplyCurrentLimitEnable(true).withSupplyCurrentLimit(80));
-        driveMotor.getConfigurator().apply(new MotorOutputConfigs().withInverted(invertDrive?InvertedValue.Clockwise_Positive:InvertedValue.CounterClockwise_Positive).withNeutralMode(neutralModeValue));
-        driveMotor.getConfigurator().apply(driveFeedbackConfigs, 5);
+      driveMotor = new SparkMax(driveMotorCANID, MotorType.kBrushless);
+      driveEncoder = driveMotor.getEncoder();
+      drivePIDController = driveMotor.getClosedLoopController();
+      //steerMotor.configure(steerValues, com.revrobotics.spark.SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         
-        steerPIDController= steerMotor.getClosedLoopController();
-        steerValues.inverted(invertSteer);
-        steerValues.idleMode(IdleMode.kBrake);
-        steerValues.smartCurrentLimit(65);
+      driveValues = new SparkMaxConfig()
+      .apply(new ClosedLoopConfig().pidf(0.0225, 0.000001, 0.0, 0.0, ClosedLoopSlot.kSlot0).positionWrappingEnabled(true).positionWrappingInputRange(-179.9999999, 180));
+      driveValues.encoder.positionConversionFactor(Constants.ModuleConstants.kDriveEncoderRot2Meter);
+      driveValues.encoder.velocityConversionFactor(Constants.ModuleConstants.kDriveEncoderRPM2MeterPerSec);
+      driveValues.inverted(invertDrive);
+      driveValues.idleMode(IdleMode.kBrake);
+      driveValues.smartCurrentLimit(65);
+        
+       
+      steerMotor = new SparkMax(steerMotorCANID, MotorType.kBrushless);
+      steerEncoder = steerMotor.getEncoder();
+      steerPIDController = steerMotor.getClosedLoopController();
+      //steerMotor.configure(steerValues, com.revrobotics.spark.SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        
+      steerValues = new SparkMaxConfig()
+      .apply(new ClosedLoopConfig().pidf(0.0225, 0.000001, 0.0, 0.0, ClosedLoopSlot.kSlot0).positionWrappingEnabled(true).positionWrappingInputRange(-179.9999999, 180));
+      steerValues.encoder.positionConversionFactor(Constants.ModuleConstants.kTurningConversionFactor2Deg);
+      steerValues.encoder.velocityConversionFactor(Constants.ModuleConstants.kSteerEncoderRPM2DegPerSec);
+      steerValues.inverted(invertSteer);
+      steerValues.idleMode(IdleMode.kBrake);
+      steerValues.smartCurrentLimit(65);
 
-        steerMotor = new SparkMax(steerMotorCANID, MotorType.kBrushless);
-        steerEncoder = steerMotor.getEncoder();
-        steerPIDController = steerMotor.getClosedLoopController();
-        steerMotor.configure(steerValues, com.revrobotics.spark.SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        
         this.absoluteReversed = absoluteReversed;
         CANConfig = new CANcoderConfiguration().withMagnetSensor(new MagnetSensorConfigs().withMagnetOffset(absOffset).withAbsoluteSensorDiscontinuityPoint(0.5));
 
@@ -130,22 +146,22 @@ public class Module extends SubsystemBase{
 
     public void resetEncoders()
     {
-        driveMotor.setPosition(0);
+        driveEncoder.setPosition(0);
         steerEncoder.setPosition(0);
     }
 
     public double getDrivePosition()
     {
-        return driveMotor.getPosition().getValueAsDouble() * ModuleConstants.kDriveEncoderRot2Meter;
+        return driveEncoder.getPosition() * ModuleConstants.kDriveEncoderRot2Meter;
     }
     public double getDriveVelocity()
   {
-    return driveMotor.getVelocity().getValueAsDouble();
+    return driveEncoder.getVelocity();
   }
   public void getUpToSpeed(double velocityMPS)
   {
     double rps = velocityMPS * ModuleConstants.kDriveMPS2RPS;
-    driveMotor.setControl(new MotionMagicVelocityVoltage(rps));
+    driveMotor.set(rps);
   }
   
    public void setDesiredState(SwerveModuleState state) 

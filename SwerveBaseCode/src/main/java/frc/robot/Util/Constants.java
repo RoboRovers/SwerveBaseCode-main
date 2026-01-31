@@ -40,21 +40,21 @@ public final class Constants {
 
     //TODO Configure all motor controller CAN Bus ports
     //start front front left to front right to back right and all drives then all steers then all absolutes
-    public static final int kFrontLeftTurningMotorPort = 2;//2
+    /*public static final int kFrontLeftTurningMotorPort = 2;//2
     public static final int kFrontLeftDriveMotorPort = 1;//1
-    public static final int kFrontLeftDriveAbsoluteEncoderPort = 1;//10
+    public static final int kFrontLeftDriveAbsoluteEncoderPort = 9;//10
     
-    public static final int kFrontRightTurningMotorPort = 4;//6
-    public static final int kFrontRightDriveMotorPort = 3;//5
-    public static final int kFrontRightDriveAbsoluteEncoderPort = 2; //11
+    public static final int kFrontRightTurningMotorPort = 40;//6
+    public static final int kFrontRightDriveMotorPort = 30;//5
+    public static final int kFrontRightDriveAbsoluteEncoderPort = 100; //11
 
-    public static final int kBackLeftTurningMotorPort = 5; //3
-    public static final int kBackLeftDriveMotorPort = 6; //4
-    public static final int kBackLeftDriveAbsoluteEncoderPort = 4; //12
+    public static final int kBackLeftTurningMotorPort = 50; //3
+    public static final int kBackLeftDriveMotorPort = 60; //4
+    public static final int kBackLeftDriveAbsoluteEncoderPort = 110; //12
 
-    public static final int kBackRightTurningMotorPort = 7; //7
-    public static final int kBackRightDriveMotorPort = 8; //8
-    public static final int kBackRightDriveAbsoluteEncoderPort = 3;//13
+    public static final int kBackRightTurningMotorPort = 70; //7
+    public static final int kBackRightDriveMotorPort = 80; //8
+    public static final int kBackRightDriveAbsoluteEncoderPort = 120;//13*/
     
 
     //TODO Test and input all module offsets
@@ -112,8 +112,8 @@ public final class Constants {
   public static final class OIConstants {
     public static final int kOPControllerPort = 2;
     public static final double kDeadband = 0.09;
-    public static final int kLeftStickPort = 1;
-    public static final int kRightStickPort = 2;
+    public static final int kLeftStickPort = 0;
+    public static final int kRightStickPort = 1;
   }
  
 
