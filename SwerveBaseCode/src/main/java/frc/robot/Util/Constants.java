@@ -110,7 +110,7 @@ public final class Constants {
   }
 
   public static final class OIConstants {
-    public static final int kOPControllerPort = 0;
+    public static final int kOPControllerPort = 2;
     public static final double kDeadband = 0.09;
     public static final int kLeftStickPort = 1;
     public static final int kRightStickPort = 2;

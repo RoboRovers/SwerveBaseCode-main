@@ -8,8 +8,8 @@ public class Controller {
 
     public Controller()
     {
-        leftStick = new CommandJoystick(Map_Controller.Left_Joystick); //Change this
-        rightStick = new CommandJoystick(Map_Controller.RIght_Joystick); //Change this
+        leftStick = new CommandJoystick(Map_Controller.Left_Joystick); 
+        rightStick = new CommandJoystick(Map_Controller.RIght_Joystick); 
         
     }
 }
