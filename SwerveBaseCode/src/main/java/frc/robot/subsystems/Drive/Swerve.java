@@ -30,10 +30,10 @@ public class Swerve extends SubsystemBase{
     Optional<Alliance> alliance;
   
     
-    public static Module frontLeftModule = new Module(Map_DriveTrain.Front_Left_CANCoder, Map_DriveTrain.Front_Left_Drive, DriveConstants.kFrontLeftDriveEncoderReversed, DriveConstants.kFrontLeftSteerEncoderReversed, Map_DriveTrain.Front_Left_CANCoder, DriveConstants.kFLOffset, DriveConstants.kFrontLeftDriveAbsoluteEncoderReversed);
-    public static Module frontRightModule = new Module(Map_DriveTrain.Front_Right_CANCoder, Map_DriveTrain.Front_Right_Drive, DriveConstants.kFrontRightDriveEncoderReversed, DriveConstants.kFrontRightSteerEncoderReversed, Map_DriveTrain.Front_Right_CANCoder, DriveConstants.kFROffset, DriveConstants.kFrontRightDriveAbsoluteEncoderReversed);
-    public static Module backLeftModule = new Module(Map_DriveTrain.Back_Left_CANCoder, Map_DriveTrain.Back_Left_Drive, DriveConstants.kBackLeftDriveEncoderReversed, DriveConstants.kBackLeftSteerEncoderReversed, Map_DriveTrain.Back_Left_CANCoder, DriveConstants.kBLOffset, DriveConstants.kBackLeftDriveAbsoluteEncoderReversed);
-    public static Module backRightModule = new Module(Map_DriveTrain.Back_Right_CANCoder, Map_DriveTrain.Back_Right_Drive, DriveConstants.kBackRightDriveEncoderReversed, DriveConstants.kBackRightSteerEncoderReversed, Map_DriveTrain.Back_Right_CANCoder, DriveConstants.kBROffset, DriveConstants.kBackRightDriveAbsoluteEncoderReversed);
+    public static Module frontLeftModule = new Module(Map_DriveTrain.Front_Left_Steer, Map_DriveTrain.Front_Left_Drive, DriveConstants.kFrontLeftDriveEncoderReversed, DriveConstants.kFrontLeftSteerEncoderReversed, Map_DriveTrain.Front_Left_CANCoder, DriveConstants.kFLOffset, DriveConstants.kFrontLeftDriveAbsoluteEncoderReversed);
+    public static Module frontRightModule = new Module(Map_DriveTrain.Front_Right_Steer, Map_DriveTrain.Front_Right_Drive, DriveConstants.kFrontRightDriveEncoderReversed, DriveConstants.kFrontRightSteerEncoderReversed, Map_DriveTrain.Front_Right_CANCoder, DriveConstants.kFROffset, DriveConstants.kFrontRightDriveAbsoluteEncoderReversed);
+    public static Module backLeftModule = new Module(Map_DriveTrain.Back_Left_Steer, Map_DriveTrain.Back_Left_Drive, DriveConstants.kBackLeftDriveEncoderReversed, DriveConstants.kBackLeftSteerEncoderReversed, Map_DriveTrain.Back_Left_CANCoder, DriveConstants.kBLOffset, DriveConstants.kBackLeftDriveAbsoluteEncoderReversed);
+    public static Module backRightModule = new Module(Map_DriveTrain.Back_Right_Steer, Map_DriveTrain.Back_Right_Drive, DriveConstants.kBackRightDriveEncoderReversed, DriveConstants.kBackRightSteerEncoderReversed, Map_DriveTrain.Back_Right_CANCoder, DriveConstants.kBROffset, DriveConstants.kBackRightDriveAbsoluteEncoderReversed);
     
     
     public Swerve() 
@@ -125,7 +125,7 @@ public class Swerve extends SubsystemBase{
         frontRightModule.setDesiredState(moduleStates[1]);
         backLeftModule.setDesiredState(moduleStates[2]);
         backRightModule.setDesiredState(moduleStates[3]);
-        // SmartDashboard.putNumber("FL module desired Degrees", moduleStates[1].angle.getDegrees());
+        SmartDashboard.putNumber("FL module desired Degrees", moduleStates[1].angle.getDegrees());
     }
     
     //face forward method. Called once the bot is enabled

@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Drive;
+package frc.robot.commands;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -45,9 +45,9 @@ public class Drive extends Command{
 
     @Override
     public void execute() {
-        xSpeed = -right.getY();
-        ySpeed = -right.getX();
-        turningSpeed = -left.getX();
+        xSpeed = -left.getY();
+        ySpeed = -left.getX();
+        turningSpeed = -right.getX();
         fieldOriented = s_Swerve.fieldOriented;
 
         xSpeed = Math.abs(xSpeed) > DEADBAND ? xSpeed : 0.0;

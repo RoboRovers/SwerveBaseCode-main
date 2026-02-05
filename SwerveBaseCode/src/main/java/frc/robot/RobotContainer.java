@@ -8,6 +8,7 @@ import frc.robot.Subsystems.ExampleSubsystem;
 import frc.robot.Util.Constants.DriveConstants;
 import frc.robot.Util.Constants.OIConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.Drive;
 import frc.robot.commands.ExampleCommand;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,8 +18,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Subsystems.Drive.Swerve;
-
-import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Util.Controller;
 import frc.robot.Subsystems.ExampleSubsystem;
 

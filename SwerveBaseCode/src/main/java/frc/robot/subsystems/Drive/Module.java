@@ -4,8 +4,10 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.SparkBaseConfig;
@@ -26,6 +28,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.pathplanner.lib.config.ModuleConfig;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -103,34 +106,50 @@ public class Module extends SubsystemBase{
       driveEncoder = driveMotor.getEncoder();
       drivePIDController = driveMotor.getClosedLoopController();
       //steerMotor.configure(steerValues, com.revrobotics.spark.SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        
-      driveValues = new SparkMaxConfig()
-      .apply(new ClosedLoopConfig().pidf(0.0225, 0.000001, 0.0, 0.0, ClosedLoopSlot.kSlot0).positionWrappingEnabled(true).positionWrappingInputRange(-179.9999999, 180));
+      driveValues = new SparkMaxConfig();
       driveValues.encoder.positionConversionFactor(Constants.ModuleConstants.kDriveEncoderRot2Meter);
       driveValues.encoder.velocityConversionFactor(Constants.ModuleConstants.kDriveEncoderRPM2MeterPerSec);
-      driveValues.inverted(invertDrive);
-      driveValues.idleMode(IdleMode.kBrake);
+      
       driveValues.smartCurrentLimit(65);
+
+      
+
+driveValues
+    .inverted(invertDrive)
+    .idleMode(IdleMode.kBrake);
+driveValues.encoder
+    .positionConversionFactor(Constants.ModuleConstants.kDriveEncoderRot2Meter)
+    .velocityConversionFactor(Constants.ModuleConstants.kDriveEncoderRPM2MeterPerSec);
+driveValues.closedLoop
+    .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+    .pid(.0075, 0.0, 0.0);
+    
+driveMotor.configure(driveValues, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         
        
       steerMotor = new SparkMax(steerMotorCANID, MotorType.kBrushless);
       steerEncoder = steerMotor.getEncoder();
       steerPIDController = steerMotor.getClosedLoopController();
-      //steerMotor.configure(steerValues, com.revrobotics.spark.SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+      
         
-      steerValues = new SparkMaxConfig()
-      .apply(new ClosedLoopConfig().pidf(0.0225, 0.000001, 0.0, 0.0, ClosedLoopSlot.kSlot0).positionWrappingEnabled(true).positionWrappingInputRange(-179.9999999, 180));
-      steerValues.encoder.positionConversionFactor(Constants.ModuleConstants.kTurningConversionFactor2Deg);
-      steerValues.encoder.velocityConversionFactor(Constants.ModuleConstants.kSteerEncoderRPM2DegPerSec);
-      steerValues.inverted(invertSteer);
-      steerValues.idleMode(IdleMode.kBrake);
-      steerValues.smartCurrentLimit(65);
+      steerValues = new SparkMaxConfig();
+      steerValues
+    .inverted(invertSteer)
+    .idleMode(IdleMode.kBrake);
+    steerValues.encoder
+    .positionConversionFactor(ModuleConstants.kTurningConversionFactor2Deg)
+    .velocityConversionFactor(ModuleConstants.kSteerEncoderRPM2DegPerSec);
+    steerValues.closedLoop
+    .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+    .pid(0.0075, 0.0, 0.0);
+    
+    steerMotor.configure(steerValues, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        this.absoluteReversed = absoluteReversed;
-        CANConfig = new CANcoderConfiguration().withMagnetSensor(new MagnetSensorConfigs().withMagnetOffset(absOffset).withAbsoluteSensorDiscontinuityPoint(0.5));
+      this.absoluteReversed = absoluteReversed;
+      CANConfig = new CANcoderConfiguration().withMagnetSensor(new MagnetSensorConfigs().withMagnetOffset(absOffset).withAbsoluteSensorDiscontinuityPoint(0.5));
 
-        absoluteEncoder = new CANcoder(absoluteEncoderCANID);
-        absoluteEncoder.getConfigurator().apply((CANConfig));
+      absoluteEncoder = new CANcoder(absoluteEncoderCANID);
+      absoluteEncoder.getConfigurator().apply((CANConfig));
 
 
         resetEncoders();
@@ -164,15 +183,7 @@ public class Module extends SubsystemBase{
     driveMotor.set(rps);
   }
   
-   public void setDesiredState(SwerveModuleState state) 
-  {
-    if (Math.abs(state.speedMetersPerSecond) < 0.01) {stop();return;}
-    state.optimize(getModulePosition().angle);
-    state.cosineScale(getModulePosition().angle);
-    driveMotor.set(state.speedMetersPerSecond / Constants.DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
-    // getUpToSpeed(state.speedMetersPerSecond);
-    steerPIDController.setSetpoint(state.angle.getDegrees(), ControlType.kPosition);
-  }
+
   
   //Steer Methods
   public double getPosition()
@@ -217,6 +228,15 @@ public class Module extends SubsystemBase{
       Thread.sleep(10);
       steerPIDController.setSetpoint(90, ControlType.kPosition);
     } catch (Exception e){}
+  }
+     public void setDesiredState(SwerveModuleState state) 
+  {
+    if (Math.abs(state.speedMetersPerSecond) < 0.01) {stop();return;}
+    state.optimize(getModulePosition().angle);
+    state.cosineScale(getModulePosition().angle);
+    driveMotor.set(state.speedMetersPerSecond / Constants.DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
+    // getUpToSpeed(state.speedMetersPerSecond);
+    steerPIDController.setSetpoint(state.angle.getDegrees(), ControlType.kPosition);
   }
     
 }
