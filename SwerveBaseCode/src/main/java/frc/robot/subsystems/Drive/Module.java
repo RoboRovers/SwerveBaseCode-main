@@ -69,6 +69,7 @@ public class Module extends SubsystemBase{
     public RelativeEncoder steerEncoder;
     public RelativeEncoder driveEncoder;
     public SparkBaseConfig steerValues;
+  
 
     public Rotation2d absOffset;
     public CANcoderConfiguration CANConfig;
@@ -122,7 +123,7 @@ driveValues.encoder
     .velocityConversionFactor(Constants.ModuleConstants.kDriveEncoderRPM2MeterPerSec);
 driveValues.closedLoop
     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-    .pid(.0075, 0.0, 0.0);
+    .pid(.01, 0.0, 0.0);
     
 driveMotor.configure(driveValues, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         
@@ -130,6 +131,7 @@ driveMotor.configure(driveValues, ResetMode.kResetSafeParameters, PersistMode.kP
       steerMotor = new SparkMax(steerMotorCANID, MotorType.kBrushless);
       steerEncoder = steerMotor.getEncoder();
       steerPIDController = steerMotor.getClosedLoopController();
+      
       
         
       steerValues = new SparkMaxConfig();
@@ -140,8 +142,13 @@ driveMotor.configure(driveValues, ResetMode.kResetSafeParameters, PersistMode.kP
     .positionConversionFactor(ModuleConstants.kTurningConversionFactor2Deg)
     .velocityConversionFactor(ModuleConstants.kSteerEncoderRPM2DegPerSec);
     steerValues.closedLoop
-    .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-    .pid(0.0075, 0.0, 0.0);
+    .feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.00325, 0.000, 0.00).positionWrappingEnabled(true).positionWrappingInputRange(0.000001, 360);
+  
+
+    
+    
+    
+    
     
     steerMotor.configure(steerValues, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -150,7 +157,8 @@ driveMotor.configure(driveValues, ResetMode.kResetSafeParameters, PersistMode.kP
 
       absoluteEncoder = new CANcoder(absoluteEncoderCANID);
       absoluteEncoder.getConfigurator().apply((CANConfig));
-
+      
+      
 
         resetEncoders();
     }
@@ -193,7 +201,8 @@ driveMotor.configure(driveValues, ResetMode.kResetSafeParameters, PersistMode.kP
   public double getABSPosition()
   {
     
-    double angle = absoluteEncoder.getAbsolutePosition().getValueAsDouble()*360; //  * 360 to convert to degrees
+    double angle = absoluteEncoder.getAbsolutePosition().getValueAsDouble()*360; 
+    
     return (angle  * (absoluteReversed ? -1 : 1) ) % 720;
   }
   public SwerveModuleState getModuleState()
@@ -232,10 +241,16 @@ driveMotor.configure(driveValues, ResetMode.kResetSafeParameters, PersistMode.kP
      public void setDesiredState(SwerveModuleState state) 
   {
     if (Math.abs(state.speedMetersPerSecond) < 0.01) {stop();return;}
+    
+    
+    System.out.println("Before Optimize:" + state.angle.getDegrees());
     state.optimize(getModulePosition().angle);
+    System.out.println("After% Optimize:" + state.angle.getDegrees());
     state.cosineScale(getModulePosition().angle);
+    System.out.println("After Scale" + state.angle.getDegrees());
     driveMotor.set(state.speedMetersPerSecond / Constants.DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
     // getUpToSpeed(state.speedMetersPerSecond);
+    
     steerPIDController.setSetpoint(state.angle.getDegrees(), ControlType.kPosition);
   }
     

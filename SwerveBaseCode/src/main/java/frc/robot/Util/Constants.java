@@ -58,27 +58,27 @@ public final class Constants {
     
 
     //TODO Test and input all module offsets
-    public static final double kFLOffset= -0.022949;
+    public static final double kFLOffset= -0.018066;
     public static final double kFROffset = -0.424561;
     public static final double kBLOffset = 0.308105;
     public static final double kBROffset = -0.365723;
 
 
     //TODO Invert any motor to match controller output
-    public static final boolean kFrontLeftSteerEncoderReversed = false;
-    public static final boolean kFrontRightSteerEncoderReversed = false;
-    public static final boolean kBackLeftSteerEncoderReversed = false;
-    public static final boolean kBackRightSteerEncoderReversed = false;
+    public static final boolean kFrontLeftSteerEncoderReversed = true;
+    public static final boolean kFrontRightSteerEncoderReversed = true;
+    public static final boolean kBackLeftSteerEncoderReversed = true;
+    public static final boolean kBackRightSteerEncoderReversed = true;
 
-    public static final boolean kFrontLeftDriveEncoderReversed = true;
+    public static final boolean kFrontLeftDriveEncoderReversed = false;
     public static final boolean kFrontRightDriveEncoderReversed = false;
     public static final boolean kBackLeftDriveEncoderReversed = true;
     public static final boolean kBackRightDriveEncoderReversed = false;
 
     public static final boolean kFrontLeftDriveAbsoluteEncoderReversed = false;
-    public static final boolean kFrontRightDriveAbsoluteEncoderReversed = false;
-    public static final boolean kBackLeftDriveAbsoluteEncoderReversed = false;
-    public static final boolean kBackRightDriveAbsoluteEncoderReversed = false;
+    public static final boolean kFrontRightDriveAbsoluteEncoderReversed = true;
+    public static final boolean kBackLeftDriveAbsoluteEncoderReversed = true;
+    public static final boolean kBackRightDriveAbsoluteEncoderReversed = true;
 
     public static final double kPhysicalMaxSpeedMetersPerSecond = 4.60248; //6.949 for Swerve X, 4.60248 for sd
     public static final double kPhysicalMaxAngularSpeedRadiansPerSecond =kPhysicalMaxSpeedMetersPerSecond/(kTrackWidth/2);

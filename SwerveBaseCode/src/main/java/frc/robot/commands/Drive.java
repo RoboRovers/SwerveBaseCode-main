@@ -41,12 +41,13 @@ public class Drive extends Command{
     public void initialize()
     {
         s_Swerve.faceAllFoward();
+        
     }
 
     @Override
     public void execute() {
         xSpeed = -left.getY();
-        ySpeed = -left.getX();
+        ySpeed = left.getX();
         turningSpeed = -right.getX();
         fieldOriented = s_Swerve.fieldOriented;
 
